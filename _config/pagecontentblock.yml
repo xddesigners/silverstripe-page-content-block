@@ -1,0 +1,10 @@
+---
+name: pagecontentblock
+---
+Page:
+  default_blocks:
+    - XD\PageContentBlock\Models\PageContentBlock
+
+SilverStripe\Core\Injector\Injector:
+  DNADesign\Elemental\Extensions\ElementalPageExtension:
+    class: XD\PageContentBlock\Extensions\ElementalPageExtension
