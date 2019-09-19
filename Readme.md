@@ -19,6 +19,13 @@ So you can access the page `$Content`, `$Title` or any other method on that elem
 The `PageContentBlock` is created on page creation so the element always exists. 
 The user can simply start typing in the content field and keeps the flexibility of adding any blocks around the `PageContentBlock`.
 
+### Templating
+
+The block searches for a block template closest matching the current page type.
+It looks fot it's own class ancestry and adds "ContentBlock" to the end of the class name. 
+For example, for a `BlogPost` it will search for a `BlogPostContentBlock.ss`, if not found it will go down the ancestry until it will fallback to the `PageContentBlock.ss`.
+He will search in one folder namespaced to this module. The template folder path is `templates/XD/PageContentBlock/Models/YourClassContentBlock.ss`.
+
 ### Configuration
 
 The creation of the `PageContentBlock` is configurable, this module looks on the current page type for a config setting `default_blocks`. 
