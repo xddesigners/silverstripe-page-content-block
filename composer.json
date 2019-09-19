@@ -1,0 +1,23 @@
+{
+    "name": "xddesigners/page-content-block",
+    "description": "Adds a page content block to SilverStripe elemental editor",
+    "type": "silverstripe-vendormodule",
+    "keywords": ["SilverStripe", "Blocks", "Elements", "Elemental", "Editor"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Bram de Leeuw",
+            "email": "bram@xd.nl"
+        }
+    ],
+    "require": {
+        "silverstripe/framework": ">=4.0",
+        "silverstripe/cms": ">=4.0",
+        "dnadesign/silverstripe-elemental": ">=4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "XD\\PageContentBlock\\": "src"
+        }
+    }
+}

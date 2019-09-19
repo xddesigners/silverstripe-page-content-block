@@ -20,12 +20,17 @@ class ElementalPageExtension extends OriginalElementalPageExtension
 {
     private static $keep_content_field = true;
 
-    public function updateCMSFields(
-        FieldList $fields
-    ) {
+    public function updateCMSFields(FieldList $fields)
+    {
         $fields = parent::updateCMSFields($fields);
+
+        // Global keep content field setting
         $keepContentField = Config::forClass(self::class)->get('keep_content_field');
-        if ($keepContentField) {
+
+        // Per class hide content field setting
+        $hideContentField = $this->owner->config()->get('hide_content_field');
+
+        if ($keepContentField && !$hideContentField) {
             // Reinsert the Content field
             $fields->insertAfter('MenuTitle', $htmlField = HTMLEditorField::create(
                 'Content',
