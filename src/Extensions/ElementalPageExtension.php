@@ -61,6 +61,7 @@ class ElementalPageExtension extends OriginalElementalPageExtension
                 $validClasses = ClassInfo::getValidSubClasses(BaseElement::class);
                 if (in_array($blockClass, $validClasses)) {
                     $block = $blockClass::create();
+                    $block->write();
                     $elements->add($block);
                     $block->publishRecursive();
                 }
