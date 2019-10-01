@@ -30,7 +30,7 @@ class ElementalPageExtension extends OriginalElementalPageExtension
         // Per class hide content field setting
         $hideContentField = $this->owner->config()->get('hide_content_field');
 
-        if ($keepContentField && !$hideContentField) {
+        if ($keepContentField && !$hideContentField && $fields) {
             // Reinsert the Content field
             $fields->insertAfter('MenuTitle', $htmlField = HTMLEditorField::create(
                 'Content',
