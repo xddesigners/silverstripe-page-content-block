@@ -63,7 +63,7 @@ class ElementalPageExtension extends OriginalElementalPageExtension
                     $block = $blockClass::create();
                     $block->write();
                     $elements->add($block);
-                    $block->publishRecursive();
+                    $block->publishSingle();
                 }
             }
         }
