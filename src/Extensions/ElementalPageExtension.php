@@ -10,6 +10,7 @@ use SilverStripe\Core\ClassInfo;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
+use XD\PageContentBlock\Models\PageContentBlock;
 
 /**
  * @property SiteTree|ElementalPageExtension owner
@@ -65,6 +66,18 @@ class ElementalPageExtension extends OriginalElementalPageExtension
                     $elements->add($block);
                     $block->publishSingle();
                 }
+            }
+        }
+    }
+    
+    public function updateAvailableTypesForClass($class, &$list)
+    {
+        if (
+            ($area = $this->owner->ElementalArea()) &&
+            $count = $area->Elements()->filter('ClassName', PageContentBlock::class)->count()
+        ) {
+            if (isset($list[PageContentBlock::class])) {
+                unset($list[PageContentBlock::class]);
             }
         }
     }
