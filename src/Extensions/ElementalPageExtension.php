@@ -10,6 +10,7 @@ use SilverStripe\Core\ClassInfo;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
+use XD\PageContentBlock\Models\PageContentBlock;
 
 /**
  * @property SiteTree|ElementalPageExtension owner
@@ -29,7 +30,7 @@ class ElementalPageExtension extends OriginalElementalPageExtension
 
         // Per class hide content field setting
         $hideContentField = $this->owner->config()->get('hide_content_field');
-        
+
         if ($keepContentField && !$hideContentField && $fields) {
             // Reinsert the Content field
             $fields->insertAfter('MenuTitle', $htmlField = HTMLEditorField::create(
@@ -39,7 +40,7 @@ class ElementalPageExtension extends OriginalElementalPageExtension
 
             // Move the Elemental area
             $field = $fields->fieldByName('Root.Main.ElementalArea');
-            $fields->addFieldToTab('Root.Layout',$field);
+            $fields->addFieldToTab('Root.Layout', $field);
         }
         
         return $fields;
@@ -63,8 +64,20 @@ class ElementalPageExtension extends OriginalElementalPageExtension
                     $block = $blockClass::create();
                     $block->write();
                     $elements->add($block);
-                    $block->publishRecursive();
+                    $block->publishSingle();
                 }
+            }
+        }
+    }
+    
+    public function updateAvailableTypesForClass($class, &$list)
+    {
+        if (
+            ($area = $this->owner->ElementalArea()) &&
+            $count = $area->Elements()->filter('ClassName', PageContentBlock::class)->count()
+        ) {
+            if (isset($list[PageContentBlock::class])) {
+                unset($list[PageContentBlock::class]);
             }
         }
     }
