@@ -47,10 +47,7 @@ class PageContentBlock extends BaseElement
 
     public function forTemplate($holder = true)
     {
-        $controller = Controller::curr();
-        $page = $this->getPage();
-
-        if (!$page) {
+        if (!$page = $this->getPage()) {
             return null;
         }
 
@@ -58,6 +55,9 @@ class PageContentBlock extends BaseElement
         if ($page instanceof VirtualPage) {
             $page = $page->CopyContentFrom();
         }
+
+        $controllerClass = $page->getControllerName();
+        $controller = $controllerClass::create($page);
 
         // Place the full ancestry in the current namespace so templates are to be placed in a coherent place
         $nameSpace = __NAMESPACE__;
