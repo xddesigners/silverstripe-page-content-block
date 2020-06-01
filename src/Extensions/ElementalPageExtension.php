@@ -57,6 +57,16 @@ class ElementalPageExtension extends OriginalElementalPageExtension
             $blocks = array_unique($defaultBlocks);
         }
 
+        // Remove elements that are in dissallowed elements
+        if ($disallowedElements = $this->owner->config()->get('disallowed_elements')) {
+            $blocks = array_diff($blocks, $disallowedElements);
+        }
+
+        // Remove elements that are not in allowed elementes
+        if ($allowedElements = $this->owner->config()->get('allowed_elements')) {
+            $blocks = array_intersect($allowedElements, $blocks);
+        }
+
         if (!empty($blocks) && ($area = $this->owner->ElementalArea()) && ($elements = $area->Elements()) && !$elements->exists()) {
             foreach ($blocks as $blockClass) {
                 $validClasses = ClassInfo::getValidSubClasses(BaseElement::class);
