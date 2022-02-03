@@ -39,8 +39,9 @@ class ElementalPageExtension extends OriginalElementalPageExtension
             )->addExtraClass('stacked'));
 
             // Move the Elemental area
-            $field = $fields->fieldByName('Root.Main.ElementalArea');
-            $fields->addFieldToTab('Root.Layout', $field);
+            if( $field = $fields->fieldByName('Root.Main.ElementalArea') ) {
+                $fields->addFieldToTab('Root.Layout', $field);
+            }
         }
         
         return $fields;
