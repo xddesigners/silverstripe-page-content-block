@@ -47,10 +47,12 @@ class PageContentBlock extends BaseElement
 
     public function forTemplate($holder = true)
     {
-         $controller = Controller::curr();
         if (!$page = $this->getPage()) {
             return null;
         }
+        
+        $controllerClass = $page->getControllerName();
+        $controller = $controllerClass::create($page);
 
         // detect virtual page and replace parent
         if ($page instanceof VirtualPage) {
