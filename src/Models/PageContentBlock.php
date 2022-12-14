@@ -53,6 +53,7 @@ class PageContentBlock extends BaseElement
         
         $controllerClass = $page->getControllerName();
         $controller = $controllerClass::create($page);
+        $controller->setRequest(Controller::curr()->getRequest());
 
         // detect virtual page and replace parent
         if ($page instanceof VirtualPage) {
