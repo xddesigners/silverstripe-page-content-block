@@ -3,6 +3,7 @@
 namespace XD\PageContentBlock\Models;
 
 use DNADesign\Elemental\Models\BaseElement;
+use DNADesign\ElementalUserForms\Control\ElementFormController;
 use SilverStripe\CMS\Controllers\ContentController;
 use SilverStripe\CMS\Model\VirtualPage;
 use SilverStripe\Control\Controller;
@@ -51,9 +52,12 @@ class PageContentBlock extends BaseElement
             return null;
         }
         
-        $controllerClass = $page->getControllerName();
-        $controller = $controllerClass::create($page);
-        $controller->setRequest(Controller::curr()->getRequest());
+        $controller = Controller::curr();
+        if (class_exists('DNADesign\ElementalUserForms\Control\ElementFormController') && $controller instanceof ElementFormController) {
+            $controllerClass = $page->getControllerName();
+            $controller = $controllerClass::create($page);
+            $controller->setRequest(Controller::curr()->getRequest());
+        }
 
         // detect virtual page and replace parent
         if ($page instanceof VirtualPage) {
