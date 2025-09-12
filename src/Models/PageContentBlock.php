@@ -46,12 +46,12 @@ class PageContentBlock extends BaseElement
         return $fields;
     }
 
-    public function forTemplate($holder = true)
+    public function forTemplate($holder = true): string
     {
         if (!$page = $this->getPage()) {
-            return null;
+            return '';
         }
-        
+
         $controller = Controller::curr();
         if (class_exists('DNADesign\ElementalUserForms\Control\ElementFormController') && $controller instanceof ElementFormController) {
             $controllerClass = $page->getControllerName();
