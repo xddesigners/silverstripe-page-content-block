@@ -43,13 +43,12 @@ class ElementalPageExtension extends OriginalElementalPageExtension
                 $fields->addFieldToTab('Root.Layout', $field);
             }
         }
-        
+
         return $fields;
     }
 
     public function onAfterWrite()
     {
-        parent::onAfterWrite();
         if (!$this->owner->supportsElemental()) {
             return;
         }
@@ -80,7 +79,7 @@ class ElementalPageExtension extends OriginalElementalPageExtension
             }
         }
     }
-    
+
     public function updateAvailableTypesForClass($class, &$list)
     {
         if (
