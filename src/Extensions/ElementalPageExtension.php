@@ -53,6 +53,17 @@ class ElementalPageExtension extends OriginalElementalPageExtension
             return;
         }
 
+        // Fluent guard: only auto-create default blocks in the default locale.
+        // BaseElement is locale-filtered under Fluent, so in a non-default locale
+        // the existing block is invisible and the "empty area" check below would
+        // wrongly create a fresh, source-less duplicate — one per locale, per write
+        // (e.g. on every AutoTranslate run). Blocks are created once (default locale)
+        // and localised, never recreated per locale.
+        if (!$this->isDefaultFluentLocale()) {
+            return;
+        }
+
+        $blocks = [];
         if ($defaultBlocks = $this->owner->config()->get('default_blocks')) {
             $blocks = array_unique($defaultBlocks);
         }
@@ -90,5 +101,31 @@ class ElementalPageExtension extends OriginalElementalPageExtension
                 unset($list[PageContentBlock::class]);
             }
         }
+    }
+
+    /**
+     * True when Fluent is absent, or when the current Fluent locale is the default
+     * locale. Gates auto-creation of default blocks so they are only ever created
+     * once (in the default locale) instead of duplicated per locale.
+     *
+     * Fluent is referenced by FQCN via class_exists so the module keeps working on
+     * sites without tractorcow/silverstripe-fluent installed.
+     */
+    protected function isDefaultFluentLocale(): bool
+    {
+        $stateClass = 'TractorCow\\Fluent\\State\\FluentState';
+        $localeClass = 'TractorCow\\Fluent\\Model\\Locale';
+        if (!class_exists($stateClass) || !class_exists($localeClass)) {
+            return true;
+        }
+
+        $current = $stateClass::singleton()->getLocale();
+        if (!$current) {
+            // No locale context (e.g. CLI without Fluent state) — treat as default.
+            return true;
+        }
+
+        $default = $localeClass::getDefault();
+        return !$default || $current === $default->Locale;
     }
 }
